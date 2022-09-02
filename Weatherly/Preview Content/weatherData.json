@@ -1,0 +1,43 @@
+{
+   "coord":{
+      "lon":121.063671,
+      "lat":14.547193
+   },
+   "weather":[
+      {
+         "id":804,
+         "main":"Clouds",
+         "description":"overcast clouds",
+         "icon":"04n"
+      }
+   ],
+   "base":"stations",
+   "main":{
+      "temp":26.9,
+      "feels_like":29.88,
+      "temp_min":26.74,
+      "temp_max":27.3,
+      "pressure":1009,
+      "humidity":84
+   },
+   "visibility":10000,
+   "wind":{
+      "speed":2.06,
+      "deg":230
+   },
+   "clouds":{
+      "all":100
+   },
+   "dt":1660733620,
+   "sys":{
+      "type":1,
+      "id":8160,
+      "country":"PH",
+      "sunrise":1660686132,
+      "sunset":1660731476
+   },
+   "timezone":28800,
+   "id":1694403,
+   "name":"Pateros",
+   "cod":200
+}
