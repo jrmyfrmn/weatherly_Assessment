@@ -9,109 +9,143 @@ import SwiftUI
 
 struct WeatherView: View {
     
+    public var listOfCity = cityList
+    @State var searchText = ""
+    
     var weather: ResponseBody
     
     var body: some View {
-        HStack {
-            ZStack {
-                LinearGradient(gradient: .init(colors: [.pink, .purple, .blue]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
-                ZStack(alignment: .center) {
-                    VStack {
-                        
-                        VStack (alignment: .center, spacing: 20) {
-                            Text(weather.name)
-                                .font(.largeTitle)
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color.white)
-                            
-                            Text("Today, \(Date().formatted(.dateTime.month().day().hour().minute()))")
-                                .fontWeight(.light)
-                                .foregroundColor(Color.white)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        
-                        Spacer()
-                            .frame(height: 40)
+        NavigationView {
+            
+            HStack {
+                
+                ZStack {
+                    LinearGradient(gradient: .init(colors: [.pink, .purple, .blue]), startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all)
+                    ZStack(alignment: .center) {
                         
                         VStack {
-                            HStack {
-                                VStack(spacing: 10) {
-                                    Image(systemName: "cloud")
-                                        .font(.system(size: 40))
-                                        .foregroundColor(Color.white)
-                                    
-                                    Text("\(weather.weather[0].main)")
-                                        .font(.subheadline)
-                                        .fontWeight(.light)
-                                        .foregroundColor(Color.white)
-                                }
-                                .frame(width: 100, alignment: .leading)
+                            VStack (alignment: .center, spacing: 10) {
                                 
-                                
-                                Text(weather.main.temp.roundDouble() + "°")
-                                    .font(.system(size: 50))
-                                    .fontWeight(.bold)
+                                Text(weather.name)
+                                    .font(.largeTitle)
+                                    .fontWeight(.semibold)
                                     .foregroundColor(Color.white)
-                                    .padding()
+                                Text("Today, \(Date().formatted(.dateTime.month().day().hour().minute()))")
+                                    .fontWeight(.light)
+                                    .foregroundColor(Color.white)
                             }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    VStack(spacing: 10) {
+                                        Image(systemName: "cloud.fill")
+                                            .font(.system(size: 40))
+                                            .foregroundColor(Color.white)
+                                        
+                                        Text("\(weather.weather[0].main)")
+                                            .font(.subheadline)
+                                            .fontWeight(.light)
+                                            .foregroundColor(Color.white)
+                                    }
+                                    .frame(width: 100, alignment: .leading)
+                                    
+                                    Text(weather.main.temp.roundDouble() + "°")
+                                        .font(.system(size: 50))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color.white)
+                                        .padding()
+                                    
+                                }
+                                
+                                Spacer()
+                                    .frame(height:  250)
+                                
+                                Image("GradientCity")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 500)
+                                    .position(x: 192, y: -200)
+                                
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack {
                             
                             Spacer()
-                                .frame(height:  400)
-                            
-                            Image("GradientCity")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 500)
-                                .position(x: 192, y: -259)
-                            
-                        }
-                        .frame(maxWidth: .infinity)
+
+                            VStack(alignment: .leading, spacing: 50) {
+                                HStack {
+                                Text("Today's Weather")
+                                    .bold()
+                                    .padding(.bottom)
+                                    .foregroundColor(Color.white)
+                                    
+                                    Spacer()
+                                    
+                                    
+                                    NavigationLink(destination: Next5DaysView(), label: {
+                                        
+                                    Text("Next 5 Days")
+                                        .bold()
+                                        .padding(.bottom)
+                                        .foregroundColor(Color.white)
+                                        
+                                    })
+                                    .navigationTitle("")
+                                    Image(systemName: "chevron.right.circle")
+                                        .padding(.bottom)
+                                        .foregroundColor(Color.white)
+
+                                }
+                                
+                                HStack {
+                                    WeatherRow(logo: "thermometer", name: "Min temp", value: (weather.main.tempMin.roundDouble() + ("°")))
+                                    
+                                    
+                                    Spacer()
+                                    
+                                    WeatherRow(logo: "thermometer", name: "Max temp", value: (weather.main.tempMax.roundDouble() + "°"))
+                                }
+                                
+                                HStack {
+                                    WeatherRow(logo: "wind", name: "Wind speed", value: (weather.wind.speed.roundDouble() + " m/s"))
+                                    
+                                    Spacer()
+                                    
+                                    WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
+                                }
+                            } // End of VStack
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                            .padding(20)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+                            .cornerRadius(40, corners: [.topLeft, .topRight])
+                        } // end of first VStack
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .edgesIgnoringSafeArea(.bottom)
                     
-                    VStack {
-                        
-                        Spacer()
-                            //.frame(height: 400)
-                        
-                        VStack(alignment: .leading, spacing: 40) {
-                            
-                            Text("Today's Weather")
-                                .bold()
-                                .padding(.bottom)
-                                .foregroundColor(Color.white)
-                               
-                            
-                            HStack {
-                                WeatherRow(logo: "thermometer", name: "Min temp", value: (weather.main.tempMin.roundDouble() + ("°")))
-                                
-                                
-                                Spacer()
-                                
-                                WeatherRow(logo: "thermometer", name: "Max temp", value: (weather.main.tempMax.roundDouble() + "°"))
-                            }
-                            
-                            HStack {
-                                WeatherRow(logo: "wind", name: "Wind speed", value: (weather.wind.speed.roundDouble() + " m/s"))
-                                
-                                Spacer()
-                                
-                                WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
-                            }
-                        } // End of VStack
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        .padding(20)
-                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-                        .cornerRadius(40, corners: [.topLeft, .topRight])
-                    }
                 }
-                .edgesIgnoringSafeArea(.bottom)
-                
-            }
+            } // End of first HStack
+
+            .searchable(text: $searchText)
+            .navigationTitle("Cities")
+            
+        } // End of Nav View
+        
+    } // end of someView
+    
+    var cities: [String] {
+        let lcCities = listOfCity.map { $0.lowercased() }
+        
+        return searchText == "" ? lcCities : lcCities.filter {
+            $0.contains(searchText.lowercased())
         }
-    }
+    } // end newly added codes
 }
 
 struct WeatherView_Previews: PreviewProvider {
