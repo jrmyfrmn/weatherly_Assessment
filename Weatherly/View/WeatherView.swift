@@ -9,7 +9,9 @@ import SwiftUI
 
 struct WeatherView: View {
     
-    public var listOfCity = cityList
+   // public var listOfCity = cityList
+    @AppStorage ("isDarkMode") private var isDark = false
+    @State private var isSheet = false
     @State var searchText = ""
     
     var weather: ResponseBody
@@ -70,9 +72,23 @@ struct WeatherView: View {
                                 
                             }
                             .frame(maxWidth: .infinity)
-                        }
+                        } // end of first VStack
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        .sheet(isPresented: $isSheet) {
+                            Text("Sheet View")
+                        }
+                        .toolbar{
+                            ToolbarItem(placement: ToolbarItemPlacement
+                                .navigationBarTrailing){
+                                    Button(action:{isDark.toggle()}, label:{
+                                        isDark ? Label ("Dark", systemImage: "lightbulb.fill") :
+                                        Label ("Dark", systemImage: "lightbulb")
+                                    })
+                                }
+                        }
+                        //.environment(\.colorScheme, isDark ? .dark : .light)
                         
                         VStack {
                             
@@ -96,7 +112,6 @@ struct WeatherView: View {
                                         .foregroundColor(Color.white)
                                         
                                     })
-                                    .navigationTitle("")
                                     Image(systemName: "chevron.right.circle")
                                         .padding(.bottom)
                                         .foregroundColor(Color.white)
@@ -125,27 +140,33 @@ struct WeatherView: View {
                             .padding(20)
                             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
                             .cornerRadius(40, corners: [.topLeft, .topRight])
-                        } // end of first VStack
+                        } // end of second VStack
                     }
                     .edgesIgnoringSafeArea(.bottom)
+                    
                     
                 }
             } // End of first HStack
 
             .searchable(text: $searchText)
-            .navigationTitle("Cities")
+            .navigationTitle("Add Cities")
+            .environment(\.colorScheme, isDark ? .dark : .light)
             
-        } // End of Nav View
+            
+        }
+        // End of Nav View
         
     } // end of someView
     
-    var cities: [String] {
-        let lcCities = listOfCity.map { $0.lowercased() }
-        
-        return searchText == "" ? lcCities : lcCities.filter {
-            $0.contains(searchText.lowercased())
-        }
-    } // end newly added codes
+    
+    
+//    var cities: [String] {
+//        let lcCities = listOfCity.map { $0.lowercased() }
+//
+//        return searchText == "" ? lcCities : lcCities.filter {
+//            $0.contains(searchText.lowercased())
+//        }
+//    } // end newly added codes
 }
 
 struct WeatherView_Previews: PreviewProvider {
